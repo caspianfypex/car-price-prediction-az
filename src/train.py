@@ -1,7 +1,7 @@
 from pathlib import Path
 from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import Ridge
+from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split, cross_val_score
 from preprocessing import prepare_data
@@ -26,7 +26,7 @@ plt.title('Histogram')
 plt.xlabel('Price')
 plt.ylabel('Frequency')
 plt.tight_layout()
-plt.savefig(f'{plotsPath}price.png', dpi=300)
+plt.savefig(f'{plotsPath}price.png', dpi=150)
 #
 
 x_train,x_test,y_train,y_test = train_test_split(features, price, test_size=0.2, shuffle=True, random_state=42)
@@ -52,8 +52,10 @@ model_rf = RandomForestRegressor(
     random_state=42
 )
 
+
 model_xgb.fit(x_train, y_train)
 model_rf.fit(x_train, y_train)
+
 
 y_pred = np.expm1(model_xgb.predict(x_test))
 y_test = np.expm1(y_test)
@@ -79,7 +81,7 @@ plt.xlabel("Actual Price")
 plt.ylabel("Predicted Price")
 plt.title("Actual vs Predicted Price")
 plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], 'r--')
-plt.savefig(f'{plotsPath}xgb_data.png', dpi=300)
+plt.savefig(f'{plotsPath}xgb_data.png', dpi=150)
 #
 
 y_pred = np.expm1(model_rf.predict(x_test))
@@ -106,13 +108,11 @@ plt.xlabel("Actual Price")
 plt.ylabel("Predicted Price")
 plt.title("Actual vs Predicted Price")
 plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], 'r--')
-plt.savefig(f'{plotsPath}rf_data.png', dpi=300)
+plt.savefig(f'{plotsPath}rf_data.png', dpi=150)
 
 
 joblib.dump(model_xgb, f'{modelPath}model_xgb.pkl')
 joblib.dump(model_rf, f'{modelPath}model_rf.pkl')
-
-
 
 #XGB Feature Importance Visualization
 features = np.array(features.columns)
@@ -132,7 +132,7 @@ plt.xlabel("Feature Importance")
 plt.gca().invert_yaxis()
 
 plt.tight_layout()
-plt.savefig(f'{plotsPath}xgb_feature_importance.png', dpi=300)
+plt.savefig(f'{plotsPath}xgb_feature_importance.png', dpi=150)
 #
 
 #Random Forest Feature Importance Visualization
@@ -152,5 +152,5 @@ plt.xlabel("Feature Importance")
 plt.gca().invert_yaxis()
 
 plt.tight_layout()
-plt.savefig(f'{plotsPath}rf_feature_importance.png', dpi=300)
+plt.savefig(f'{plotsPath}rf_feature_importance.png', dpi=150)
 #
