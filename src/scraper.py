@@ -109,7 +109,7 @@ def get_brand_ids():
     return brands
 
 def extract_data(brand_id=-1, delay=5, filename='data'):
-    data = pd.read_csv(f'{dataPath}{filename}.csv').values.tolist()
+    data = []
     output = None
     if brand_id != -1:
         max_page=get_final_page(brand_id)
@@ -119,7 +119,7 @@ def extract_data(brand_id=-1, delay=5, filename='data'):
             for c in cars:
                 data.append(get_product_info(c))
                 time.sleep(delay)
-            output = pd.DataFrame(data, columns=['Marka', 'Model', 'Il', 'L', 'At gucu', 'Fuel', 'KM', 'Veziyyet', 'Qiymet'])
+            output = pd.DataFrame(data, columns=['Brand', 'Model', 'Year', 'Engine Size', 'Horse Power', 'Fuel Type', 'Kilometrage', 'Status', 'Price'])
             output.to_csv(f'{dataPath}{filename}.csv', index=False)
         return output
     else:
@@ -132,7 +132,6 @@ def extract_data(brand_id=-1, delay=5, filename='data'):
                 for c in cars:
                     data.append(get_product_info(c))
                     time.sleep(delay)
-                output = pd.DataFrame(data, columns=['Marka', 'Model', 'Il', 'L', 'At gucu', 'Fuel', 'KM', 'Veziyyet','Qiymet'])
+                output = pd.DataFrame(data, columns=['Brand', 'Model', 'Year', 'Engine Size', 'Horse Power', 'Fuel Type', 'Kilometrage', 'Status', 'Price'])
                 output.to_csv(f'{dataPath}{filename}.csv', index=False)
         return output
-

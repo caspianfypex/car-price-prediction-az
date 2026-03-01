@@ -9,9 +9,9 @@ class Car(BaseModel):
     brand: str
     model: str
     year: int
-    l: str
+    engine_size: str
     hp: str
-    fuel: str
+    fuel_type: str
     km: str
     status: str
 

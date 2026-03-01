@@ -17,8 +17,8 @@ plotsPath = str(Path(__file__).resolve().parent.parent) + '\\plots\\'
 
 data = prepare_data(pd.read_csv(f'{dataPath}data.csv'))
 
-price = data['Qiymet']
-features = data.drop(columns=['Qiymet'])
+price = data['Price']
+features = data.drop(columns=['Price'])
 
 #Price Distribution Visualization
 plt.hist(price, bins=30,color='blue',edgecolor='black',alpha=0.7)

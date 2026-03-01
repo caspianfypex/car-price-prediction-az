@@ -21,7 +21,7 @@ models = {'xgb': model_xgb, 'rf': model_rf}
 def predict(model_name, car_list_data):
     if model_name not in models:
         raise HTTPException(404, detail='Model not found')
-    car = DataFrame([x.model_dump().values() for x in car_list_data], columns=['Marka', 'Model', 'Il', 'L', 'At gucu', 'Fuel', 'KM', 'Veziyyet'])
+    car = DataFrame([x.model_dump().values() for x in car_list_data], columns=['Brand', 'Model', 'Year', 'Engine Size', 'Horse Power', 'Fuel Type', 'Kilometrage', 'Status'])
     processed_data = preprocessing.prepare_data(car)
     model = models.get(model_name)
     predicted_values = model.predict(processed_data.to_numpy())
