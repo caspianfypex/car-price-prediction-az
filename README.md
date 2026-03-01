@@ -1,12 +1,58 @@
-# 🚗 Car Price Prediction (Azerbaijan)
+# 🚗 Car Price Prediction (Azerbaijan/Turbo.AZ)
 
 **Predict used car prices in Azerbaijan** using Machine Learning.  
 This project trains and evaluates regression models (XGBoost & Random Forest) to estimate market prices based on car attributes.
 
 
 ## 🚀 Project Overview
-This repository contains a machine learning pipeline for predicting car prices, specifically focusing on the Turbo.az, Azerbaijan used car market. The models are trained using common vehicle features (year, mileage, brand, etc.) and evaluated using regression metrics.
+This repository contains a machine learning pipeline for predicting car prices, specifically focusing on the Turbo.az, Azerbaijan car market. The models are trained using common vehicle features (year, mileage, brand, etc.) and evaluated using regression metrics.
 
+## 🔨 Installation  
+1. Clone the repository:
+```
+   git clone https://github.com/username/car-price-prediction-az.git
+ ```
+2. Environment Setup
+```
+python -m venv .venv
+source .venv/bin/activate  # macOS/Linux
+.venv\Scripts\activate    # Windows
+``` 
+3. Install dependencies:
+```
+  pip install -r requirements.txt
+```
+4. Scraping (Optional):
+```
+  python scraper.py
+```
+5. Training (Optional):
+```
+  python train.py
+```
+6. Running API:
+```
+  python -m uvicorn app:app --reload
+```
+7. Using API:
+   Details can be accessed through ```http://localhost:8000/docs```
+
+## 📂 Project Structure
+```
+car-price-prediction-az/
+├── data/                      # Raw/processed data
+├── models/                    # Saved model files after training (XGBoost/RandomForest)
+├── plots/                     # Visualization plots
+├── src/                       # Source code
+│   ├── app.py                 # API to send requests and make predictions
+│   ├── predict.py             # Prediction
+│   ├── preprocessing.py       # Feature engineering and preprocessing of data
+│   ├── scraper.py             # Scraping local car market data from Turbo.az
+│   └── train.py               # Training
+├── .gitignore                 # Git ignore configuration
+├── README.md                  # Project overview & documentation
+└── (options you might add)    # e.g., requirements.txt, notebooks/, prediction script
+```
 
 ## 📁 Dataset
 
@@ -24,39 +70,67 @@ The dataset includes used car listings with features such as:
 | `status` | Accident/Repaired/Painted |
 | `price` | Target variable (AZN) |
 
-> 📌 Scraped data of Turbo.az was used for training. You can scrape data privately on your own device, but sharing publicly is forbidden. 
-
 ## 🔍 Data Cleaning and Feature Engineering
 
-Before training, followings are done:
+Before training, following steps were done:
 
 - Handling missing values  
 - Encoding categorical variables  
 - Visualizing target distribution  
-- Addition of features, such as KMperYear and Age
-- Removal of models that appear less than 30 times from dataset
+- Feature engineering: added KMperYear and Age
+- Removal of models that appear less than 30 times
 
-Example EDA plots are stored in the `plots/` directory.
+Example plots are stored in the `plots/` directory.
 
 ---
 
-## ⚙️ Models and Hyperparameters
+## ⚙️ Models
 
 This project trains two regressors:
 
 ### 🧩 XGBoost Regressor
 
+**Hyperparameters**
 ```python
   learning_rate: 0.05,
   max_depth: 6,
   n_estimators: 1000,
   tree_method='hist'
+```
+
+**Evaluation Metrics**
+| Metric | Value |
+|---------|-------------|
+| `RMSE` | 5250.68 |
+| `MAE` | 2525.49 |
+| `MAPE` | 10.65% |
+| `R²` | 0.9812 |
 
 ### 🧩 RandomForest Regressor
 
+**Hyperparameters**
 ```python
   n_estimators=500,
   min_samples_split=5,
   min_samples_leaf=2,
   max_features='sqrt',
-  bootstrap=True,
+  bootstrap=True
+```
+
+**Evaluation Metrics**
+| Metric | Value |
+|---------|-------------|
+| `RMSE` | 5513.22 |
+| `MAE` | 2331.71 |
+| `MAPE` | 10.14% |
+| `R²` | 0.9793 |
+
+## 📝 Conclusion
+Both XGBoost and Random Forest performed well on dataset with high accuracy and low prediction errors. XGBoost showed a lower RMSE, meaning it handled larger price deviations better, while Random Forest showed a lower MAE, indicating more consistent average prediction accuracy.
+
+To improve model stability and reduce noise, only car models that appeared more than 30 times in the dataset were included in the training process. This filtering step helped the models learn more reliable patterns, and improved overall performance.
+
+Predictions are currently limited to car brands and models listed in ```data/cars_list.json```, as the model was trained only on those categories.
+
+## ⚠️ **Legal Disclaimer** 
+This project was trained on data scraped from Turbo.az. Users can scrape data privately on their own device, but redistributing or sharing scraped data publicly may violate legal or copyright restrictions. Use at your own risk.
