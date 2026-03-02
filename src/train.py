@@ -1,9 +1,8 @@
 from pathlib import Path
 from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import train_test_split
 from preprocessing import prepare_data
 import pandas as pd
 import numpy as np
@@ -21,8 +20,9 @@ price = data['Price']
 features = data.drop(columns=['Price'])
 
 #Price Distribution Visualization
+plt.figure(figsize=(10, 6))
 plt.hist(price, bins=30,color='blue',edgecolor='black',alpha=0.7)
-plt.title('Histogram')
+plt.title('Price Distribution')
 plt.xlabel('Price')
 plt.ylabel('Frequency')
 plt.tight_layout()
@@ -64,7 +64,6 @@ rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 mae = mean_absolute_error(y_test, y_pred)
 mape = np.mean(np.abs((y_test - y_pred) / y_test)) * 100
 r2 = r2_score(y_test,y_pred)
-scores = cross_val_score(model_xgb, x_train, y_train, cv=5, scoring='r2')
 
 print("===== Model Metrics =====")
 print('Model: XGBoost Regressor')
@@ -72,7 +71,6 @@ print(f"RMSE: {rmse:.2f}")
 print(f"MAE: {mae:.2f}")
 print(f"MAPE: {mape:.2f} %")
 print(f"R²: {r2:.4f}")
-print(f"Mean CV R2: {scores.mean():.4f} (+/- {scores.std():.4f})")
 
 #XGB Data Visualization
 plt.clf()
@@ -90,7 +88,6 @@ rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 mae = mean_absolute_error(y_test, y_pred)
 mape = np.mean(np.abs((y_test - y_pred) / y_test)) * 100
 r2 = r2_score(y_test,y_pred)
-scores = cross_val_score(model_rf, x_train, y_train, cv=5, scoring='r2')
 
 print(' ')
 print("===== Model Metrics =====")
@@ -99,7 +96,6 @@ print(f"RMSE: {rmse:.2f}")
 print(f"MAE: {mae:.2f}")
 print(f"MAPE: {mape:.2f} %")
 print(f"R²: {r2:.4f}")
-print(f"Mean CV R2: {scores.mean():.4f} (+/- {scores.std():.4f})")
 
 #Random Forest Data Visualization
 plt.clf()
@@ -121,7 +117,6 @@ importances = model_xgb.feature_importances_
 indices = np.argsort(importances)[::-1]
 sorted_features = features[indices]
 sorted_importances = importances[indices]
-plt.figure(figsize=(10, 6))
 plt.clf()
 
 plt.barh(range(len(sorted_importances)), sorted_importances, color='teal')
@@ -141,7 +136,6 @@ importances = model_rf.feature_importances_
 indices = np.argsort(importances)[::-1]
 sorted_features = features[indices]
 sorted_importances = importances[indices]
-plt.figure(figsize=(10, 6))
 plt.clf()
 
 plt.barh(range(len(sorted_importances)), sorted_importances, color='teal')
