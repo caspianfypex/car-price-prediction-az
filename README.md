@@ -10,7 +10,7 @@ This repository contains a machine learning pipeline for predicting car prices, 
 ## 🔨 Installation  
 1. Clone the repository:
 ```
-   git clone https://github.com/username/car-price-prediction-az.git
+git clone https://github.com/caspianfypex/car-price-prediction-az.git
  ```
 2. Environment Setup
 ```
@@ -20,22 +20,26 @@ source .venv/bin/activate  # macOS/Linux
 ``` 
 3. Install dependencies:
 ```
-  pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 4. Scraping (Optional):
 ```
-  python scraper.py
+python src/scraper.py
 ```
 5. Training (Optional):
 ```
-  python train.py
+python src/train.py
 ```
-6. Running API:
+6. Download RandomForest Model(Optional)
+  
+Pre-trained RandomForest model is not included due to huge size, should be [downloaded here](https://drive.google.com/file/d/1CgGX3KRq9WafmW9kFtxEKfjcWZFW42w9/view) and put in ```models/``` directory<br>
+
+7. Running API:
 ```
-  python -m uvicorn app:app --reload
+python -m uvicorn scr.app:app --reload
 ```
-7. Using API:
-   Details can be accessed through ```http://localhost:8000/docs```
+8. Using API:
+   Details can be accessed through [http://localhost:8000/docs](http://localhost:8000/docs)
 
 ## 📂 Project Structure
 ```
@@ -57,7 +61,6 @@ car-price-prediction-az/
 ## 📁 Dataset
 
 The dataset includes used car listings with features such as:
-
 | Feature | Description |
 |---------|-------------|
 | `brand` | Car manufacturer |
@@ -69,6 +72,20 @@ The dataset includes used car listings with features such as:
 | `fuel_type` | Petrol/Diesel/Electric/Hybrid |
 | `status` | Accident/Repaired/Painted |
 | `price` | Target variable (AZN) |
+
+#### Used Dataset Description<br>
+For training, data scraped from Turbo.az was used. You may use your own properly formatted dataset or scrape data on your local device<br>
+**Scrape Date**: February 2026<br>
+
+Models appearing less than 30 times in the dataset were excluded during training. The metrics below show results after this step.
+
+| Metric | Value |
+|---------|-------------|
+| Price Mean (AZN) | 30,445 |
+| Price Std (AZN) | 39,777 |
+| Total Data Size | 55,993 |
+| Train Data Size (80%) | 44,794 |
+| Test Data Size (20%) | 11,199 |
 
 ## 🔍 Data Cleaning and Feature Engineering
 
@@ -124,6 +141,8 @@ This project trains two regressors:
 | `MAE` | 2331.71 |
 | `MAPE` | 10.14% |
 | `R²` | 0.9793 |
+
+Note: Model was not included in ```models/``` due to its huge size, can be trained, or accessed to pre-trained model through [download link](https://drive.google.com/file/d/1CgGX3KRq9WafmW9kFtxEKfjcWZFW42w9/view).
 
 ## 📝 Conclusion
 Both XGBoost and Random Forest performed well on dataset with high accuracy and low prediction errors. XGBoost showed a lower RMSE, meaning it handled larger price deviations better, while Random Forest showed a lower MAE, indicating more consistent average prediction accuracy.
