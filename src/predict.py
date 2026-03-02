@@ -6,17 +6,20 @@ import preprocessing
 import joblib
 
 modelPath = str(Path(__file__).resolve().parent.parent) + '\\models\\'
+models = {}
+
 
 try:
     model_xgb = joblib.load(f'{modelPath}model_xgb.pkl')
+    models['xgb'] = model_xgb
 except FileNotFoundError:
     model_xgb = None
 try:
     model_rf = joblib.load(f'{modelPath}model_rf.pkl')
+    models['rf'] = model_rf
 except FileNotFoundError:
     model_rf = None
 
-models = {'xgb': model_xgb, 'rf': model_rf}
 
 def predict(model_name, car_list_data):
     if model_name not in models:
