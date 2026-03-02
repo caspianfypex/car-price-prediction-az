@@ -55,7 +55,7 @@ car-price-prediction-az/
 │   └── train.py               # Training
 ├── .gitignore                 # Git ignore configuration
 ├── README.md                  # Project overview & documentation
-└── (options you might add)    # e.g., requirements.txt, notebooks/, prediction script
+└── requirements.txt           # Dependencies
 ```
 
 ## 📁 Dataset
