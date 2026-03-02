@@ -15,8 +15,8 @@ class Car(BaseModel):
     km: str
     status: str
 
-dataPath = str(Path(__file__).resolve().parent.parent) + '\\data\\'
-cars_list = joblib.load(f'{dataPath}cars_list.pkl')
+dataPath = Path(__file__).resolve().parent.parent / 'data'
+cars_list = joblib.load(dataPath / 'cars_list.pkl')
 app = FastAPI()
 
 

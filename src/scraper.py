@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-dataPath = str(Path(__file__).resolve().parent.parent) + '\\data\\'
+dataPath = Path(__file__).resolve().parent.parent / 'data'
 MAIN_URL = 'https://turbo.az/'
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -120,7 +120,7 @@ def extract_data(brand_id=-1, delay=5, filename='data'):
                 data.append(get_product_info(c))
                 time.sleep(delay)
             output = pd.DataFrame(data, columns=['Brand', 'Model', 'Year', 'Engine Size', 'Horse Power', 'Fuel Type', 'Kilometrage', 'Status', 'Price'])
-            output.to_csv(f'{dataPath}{filename}.csv', index=False)
+            output.to_csv(dataPath / f'{filename}.csv', index=False)
         return output
     else:
         brand_ids = get_brand_ids()
@@ -133,5 +133,5 @@ def extract_data(brand_id=-1, delay=5, filename='data'):
                     data.append(get_product_info(c))
                     time.sleep(delay)
                 output = pd.DataFrame(data, columns=['Brand', 'Model', 'Year', 'Engine Size', 'Horse Power', 'Fuel Type', 'Kilometrage', 'Status', 'Price'])
-                output.to_csv(f'{dataPath}{filename}.csv', index=False)
+                output.to_csv(dataPath / f'{filename}.csv', index=False)
         return output

@@ -5,17 +5,17 @@ from pandas import DataFrame
 import preprocessing
 import joblib
 
-modelPath = str(Path(__file__).resolve().parent.parent) + '\\models\\'
+modelPath = Path(__file__).resolve().parent.parent / 'models'
 models = {}
 
 
 try:
-    model_xgb = joblib.load(f'{modelPath}model_xgb.pkl')
+    model_xgb = joblib.load(modelPath / 'model_xgb.pkl')
     models['xgb'] = model_xgb
 except FileNotFoundError:
     model_xgb = None
 try:
-    model_rf = joblib.load(f'{modelPath}model_rf.pkl')
+    model_rf = joblib.load(modelPath / 'model_rf.pkl')
     models['rf'] = model_rf
 except FileNotFoundError:
     model_rf = None

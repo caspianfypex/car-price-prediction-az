@@ -4,9 +4,9 @@ from pandas import DataFrame
 import joblib
 from sklearn.preprocessing import LabelEncoder
 
-dataPath = str(Path(__file__).resolve().parent.parent) + '\\data\\'
+dataPath = Path(__file__).resolve().parent.parent / 'data'
 try:
-    model_brand_le = joblib.load(f'{dataPath}label_encoder.pkl')
+    model_brand_le = joblib.load(dataPath / 'label_encoder.pkl')
 except FileNotFoundError:
     model_brand_le = LabelEncoder()
 
@@ -43,9 +43,9 @@ def prepare_data(data: DataFrame) -> DataFrame:
     data = pd.get_dummies(data, columns=['Fuel Type', 'Status'], drop_first=True, dtype=int)
     data['Brand_Model'] = data['Brand'] + '_' + data['Model']
     if 'Price' in data.columns:
-        joblib.dump(list(data['Brand_Model'].unique()), f'{dataPath}cars_list.pkl')
+        joblib.dump(list(data['Brand_Model'].unique()), dataPath / 'cars_list.pkl')
         data['Brand_Model'] = model_brand_le.fit_transform(data['Brand_Model'])
-        joblib.dump(model_brand_le, f'{dataPath}label_encoder.pkl')
+        joblib.dump(model_brand_le, dataPath / 'label_encoder.pkl')
     else:
         data['Brand_Model'] = model_brand_le.transform(data['Brand_Model'])
     data['Age'] = 2026 - data['Year']

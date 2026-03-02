@@ -9,12 +9,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import joblib
 
-dataPath = str(Path(__file__).resolve().parent.parent) + '\\data\\'
-modelPath = str(Path(__file__).resolve().parent.parent) + '\\models\\'
-plotsPath = str(Path(__file__).resolve().parent.parent) + '\\plots\\'
+rootPath = Path(__file__).resolve().parent.parent
+dataPath = rootPath / 'data'
+modelPath = rootPath / 'models'
+plotsPath = rootPath / 'plots'
 
 
-data = prepare_data(pd.read_csv(f'{dataPath}data.csv'))
+data = prepare_data(pd.read_csv(dataPath / 'data.csv'))
 
 price = data['Price']
 features = data.drop(columns=['Price'])
@@ -26,7 +27,7 @@ plt.title('Price Distribution')
 plt.xlabel('Price')
 plt.ylabel('Frequency')
 plt.tight_layout()
-plt.savefig(f'{plotsPath}price.png', dpi=150)
+plt.savefig(plotsPath / 'price.png', dpi=150)
 #
 
 x_train,x_test,y_train,y_test = train_test_split(features, price, test_size=0.2, shuffle=True, random_state=42)
@@ -79,7 +80,7 @@ plt.xlabel("Actual Price")
 plt.ylabel("Predicted Price")
 plt.title("Actual vs Predicted Price")
 plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], 'r--')
-plt.savefig(f'{plotsPath}xgb_data.png', dpi=150)
+plt.savefig(plotsPath / 'xgb_data.png', dpi=150)
 #
 
 y_pred = np.expm1(model_rf.predict(x_test))
@@ -104,11 +105,11 @@ plt.xlabel("Actual Price")
 plt.ylabel("Predicted Price")
 plt.title("Actual vs Predicted Price")
 plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], 'r--')
-plt.savefig(f'{plotsPath}rf_data.png', dpi=150)
+plt.savefig(plotsPath / 'rf_data.png', dpi=150)
 
 
-joblib.dump(model_xgb, f'{modelPath}model_xgb.pkl')
-joblib.dump(model_rf, f'{modelPath}model_rf.pkl')
+joblib.dump(model_xgb, modelPath / 'model_xgb.pkl')
+joblib.dump(model_rf, modelPath / 'model_rf.pkl')
 
 #XGB Feature Importance Visualization
 features = np.array(features.columns)
@@ -127,7 +128,7 @@ plt.xlabel("Feature Importance")
 plt.gca().invert_yaxis()
 
 plt.tight_layout()
-plt.savefig(f'{plotsPath}xgb_feature_importance.png', dpi=150)
+plt.savefig(plotsPath / 'xgb_feature_importance.png', dpi=150)
 #
 
 #Random Forest Feature Importance Visualization
@@ -146,5 +147,5 @@ plt.xlabel("Feature Importance")
 plt.gca().invert_yaxis()
 
 plt.tight_layout()
-plt.savefig(f'{plotsPath}rf_feature_importance.png', dpi=150)
+plt.savefig(plotsPath / 'rf_feature_importance.png', dpi=150)
 #
