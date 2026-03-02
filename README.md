@@ -36,7 +36,7 @@ Pre-trained RandomForest model is not included due to huge size, should be [down
 
 7. Running API:
 ```
-python -m uvicorn scr.app:app --reload
+python -m uvicorn src.app:app --reload
 ```
 8. Using API:
    Details can be accessed through [http://localhost:8000/docs](http://localhost:8000/docs)
