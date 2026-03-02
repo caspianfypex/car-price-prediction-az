@@ -38,8 +38,46 @@ Pre-trained RandomForest model is not included due to huge size, should be [down
 ```
 python -m uvicorn src.app:app --reload
 ```
-8. Using API:
-   Details can be accessed through [http://localhost:8000/docs](http://localhost:8000/docs)
+
+## 🛠️ API Usage
+Details can be accessed through [http://localhost:8000/docs](http://localhost:8000/docs)
+
+### Predictions:
+Endpoint: POST /model/{model_name}/predict<br>
+model_name: "xgb" or "rf"<br>
+Request body: List of cars (JSON)<br>
+
+**Example Request:**
+```
+[
+  {
+    "brand": "Mercedes",
+    "model": "GLS 450 4MATIC",
+    "year": 2023,
+    "engine_size": "3.0 L",
+    "hp": "381 a.g.",
+    "fuel_type": "Benzin",
+    "km": "65 055 km",
+    "status": "Vuruğu yoxdur, rənglənməyib"
+  }
+]
+```
+**Example Response:**
+```
+[
+  {
+    "brand": "Mercedes",
+    "model": "GLS 450 4MATIC",
+    "year": 2023,
+    "engine_size": "3.0 L",
+    "hp": "381 a.g.",
+    "fuel_type": "Benzin",
+    "km": "65 055 km",
+    "status": "Vuruğu yoxdur, rənglənməyib",
+    "price": 130288.90
+  }
+]
+```
 
 ## 📂 Project Structure
 ```
