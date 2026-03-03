@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor
@@ -19,6 +20,8 @@ data = prepare_data(pd.read_csv(dataPath / 'data.csv'))
 
 price = data['Price']
 features = data.drop(columns=['Price'])
+
+eval_metrics = {}
 
 #Price Distribution Visualization
 plt.figure(figsize=(10, 6))
@@ -72,6 +75,7 @@ print(f"RMSE: {rmse:.2f}")
 print(f"MAE: {mae:.2f}")
 print(f"MAPE: {mape:.2f} %")
 print(f"R²: {r2:.4f}")
+eval_metrics['xgb'] = {"RMSE": f'{rmse:.2f}',"MAE": f'{mae:.2f}',"MAPE": f'{mape:.2f}',"R2": f'{r2:.2f}'}
 
 #XGB Data Visualization
 plt.clf()
@@ -97,6 +101,10 @@ print(f"RMSE: {rmse:.2f}")
 print(f"MAE: {mae:.2f}")
 print(f"MAPE: {mape:.2f} %")
 print(f"R²: {r2:.4f}")
+eval_metrics['rf'] = {"RMSE": f'{rmse:.2f}',"MAE": f'{mae:.2f}',"MAPE": f'{mape:.2f}',"R2": f'{r2:.2f}'}
+
+with open(dataPath / 'eval_metrics.json', 'w', encoding='utf-8') as f:
+    json.dump(eval_metrics, f, indent=4, ensure_ascii=False)
 
 #Random Forest Data Visualization
 plt.clf()

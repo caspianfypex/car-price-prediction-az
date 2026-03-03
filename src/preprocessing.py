@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import pandas as pd
 from pandas import DataFrame
@@ -43,7 +44,8 @@ def prepare_data(data: DataFrame) -> DataFrame:
     data = pd.get_dummies(data, columns=['Fuel Type', 'Status'], drop_first=True, dtype=int)
     data['Brand_Model'] = data['Brand'] + '_' + data['Model']
     if 'Price' in data.columns:
-        joblib.dump(list(data['Brand_Model'].unique()), dataPath / 'cars_list.pkl')
+        with open(dataPath / 'cars_list.json', 'w', encoding='utf-8') as f:
+            json.dump(list(data['Brand_Model'].unique()), f, indent=4, ensure_ascii=False)
         data['Brand_Model'] = model_brand_le.fit_transform(data['Brand_Model'])
         joblib.dump(model_brand_le, dataPath / 'label_encoder.pkl')
     else:

@@ -1,9 +1,9 @@
+import json
 from pathlib import Path
 from typing import List
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import predict
-import joblib
 
 class Car(BaseModel):
     brand: str
@@ -15,8 +15,20 @@ class Car(BaseModel):
     km: str
     status: str
 
+
 dataPath = Path(__file__).resolve().parent.parent / 'data'
-cars_list = joblib.load(dataPath / 'cars_list.pkl')
+
+try:
+    with open(dataPath / 'eval_metrics.json', "r", encoding="utf-8") as f:
+        eval_metrics = json.load(f)
+except FileNotFoundError:
+    eval_metrics = None
+
+try:
+    with open(dataPath / 'cars_list.json', "r", encoding="utf-8") as f:
+        cars_list = json.load(f)
+except FileNotFoundError:
+    cars_list = None
 app = FastAPI()
 
 
@@ -30,13 +42,17 @@ def car_predict(model_name: str, car_data: List[Car]):
 
 @app.get('/model/{model_name}/metrics')
 def get_metrics(model_name: str):
-    if model_name == 'xgb':
-        return {"RMSE": 5250.68,"MAE": 2525.49,"MAPE": 10.65,"R2": 0.9812}
-    elif model_name == 'rf':
-        return {"RMSE": 5513.22, "MAE": 2331.71, "MAPE": 10.14, "R2": 0.9793}
+    if eval_metrics is not None:
+        if model_name in eval_metrics:
+            return eval_metrics[model_name]
+        else:
+            raise HTTPException(404, detail='Model was not found')
     else:
-        raise HTTPException(404, detail='Model was not found')
+        raise HTTPException(404, detail='Metrics was not found')
 
 @app.get('/model/available_cars')
 def get_available_cars():
-    return cars_list
+    if cars_list is not None:
+        return cars_list
+    else:
+        raise HTTPException(404, detail='Cars list was not found')
