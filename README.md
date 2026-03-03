@@ -24,11 +24,11 @@ pip install -r requirements.txt
 ```
 4. Scraping (Optional):
 ```
-python src/scraper.py
+python scraper.py
 ```
 5. Training (Optional):
 ```
-python src/train.py
+python train.py
 ```
 6. Download RandomForest Model(Optional)
   
@@ -36,7 +36,7 @@ Pre-trained RandomForest model is not included due to huge size, should be [down
 
 7. Running API:
 ```
-python -m uvicorn src.app:app --reload
+python -m uvicorn app:app --reload
 ```
 
 ## 🛠️ API Usage
