@@ -36,7 +36,7 @@ Pre-trained RandomForest model is not included due to huge size, should be [down
 
 7. Running API:
 ```
-python -m uvicorn app:app --reload
+python -m uvicorn main:app --reload
 ```
 
 ## 🛠️ API Usage
@@ -86,7 +86,7 @@ car-price-prediction-az/
 ├── models/                    # Saved model files after training (XGBoost/RandomForest)
 ├── plots/                     # Visualization plots
 ├── src/                       # Source code
-│   ├── app.py                 # API to send requests and make predictions
+│   ├── main.py                 # API to send requests and make predictions
 │   ├── predict.py             # Prediction
 │   ├── preprocessing.py       # Feature engineering and preprocessing of data
 │   ├── scraper.py             # Scraping local car market data from Turbo.az
